@@ -1,0 +1,47 @@
+<html>
+     <head>
+         <script>
+             function play(mp3) {
+                 document.getElementById('source').src = `/get?song=${mp3}`
+                 const audio = document.getElementById('audio')
+                 audio.load()
+                 audio.play()
+
+             }
+             function search() {
+                 const term = document.getElementById('search').value
+                 fetch(`/search?term=${term}`)
+                    .then(async results => {
+                        const json =  await results.json()
+                        console.log(json)
+                        let content = ''
+                        for (song of json){
+                            content += `<div>${song.title} - ${song.author}
+                                <button onClick="play('${song.mp3}')">Play</Button>
+                                </div>`
+                        }
+                        document.getElementById('results').innerHTML = content
+                    })
+             }
+         </script>
+     </head>
+     <body>
+         <input type="text" id="search" /> <button onClick="search()">Search</button>
+         <div id="results">
+             </div>
+             
+             <div>
+                <audio controls id="audio">
+                    <source id="source"></source>
+
+                </audio>
+
+                </audio>
+             </div>
+
+        
+
+     </body>
+
+
+</html>
